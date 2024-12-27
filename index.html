@@ -12,29 +12,97 @@
       crossorigin="anonymous"
     />
     <style>
+      body {
+        background-color: #121212;
+        color: #e0e0e0;
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 24px;
+        text-align: center;
+        color: #f1f1f1;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
       form {
-        font-size: 40px !important;
-        width: min(800px, 90%);
+        background: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        width: 100%;
+        max-width: 500px;
+      }
+
+      label {
+        font-size: 16px;
+        color: #f1f1f1;
+      }
+
+      input[type="text"] {
+        background-color: #333;
+        color: #f1f1f1;
+        border: 1px solid #444;
+        padding: 8px 12px;
+        width: 100%;
+      }
+
+      input[type="text"]:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
+
+      .btn-primary {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        border-radius: 4px;
+        width: 100%;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(45deg, #0056b3, #007bff);
       }
     </style>
   </head>
   <body>
-    <form id="form" class="mx-auto my-5 shadow p-2">
-      <div class="mb-1 d-flex">
-        <label class="mx-3" for="customer">Customer:</label>
-        <input
-          type="text"
-          class="mx-3 form-control"
-          id="customer"
-          name="Customer"
-          list="customers"
-        />
-        <datalist id="customers">
-          <!-- JavaScript will add options here -->
-        </datalist>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <div class="container">
+      <h1>Paste your YouTube link here</h1>
+      <form id="form" class="mx-auto">
+        <div class="mb-3">
+          <label for="customer">Customer:</label>
+          <input
+            type="text"
+            class="form-control mt-2"
+            id="customer"
+            name="Customer"
+            list="customers"
+          />
+          <datalist id="customers">
+            <!-- JavaScript will add options here -->
+          </datalist>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+      </form>
+    </div>
+
     <script>
       const url =
         "https://script.google.com/macros/s/AKfycbxFXxUOy-VrCRQGMR64OWUXtoFk_6kdfWPoWvkFI5lmQ8O-lAF8teUJLrfkBXubBl75Rw/exec"; // Enter your public ('access' - 'anyone') deployment URL
