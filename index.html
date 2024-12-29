@@ -15,7 +15,7 @@
       body {
         background-color: #121212;
         color: #e0e0e0;
-        font-family: "Arial", sans-serif;
+        font-family: "Roboto", sans-serif;
         margin: 0;
         padding: 0;
       }
@@ -26,59 +26,107 @@
         align-items: center;
         justify-content: center;
         min-height: 100vh;
-        padding: 15px;
+        padding: 20px;
       }
 
       h1 {
-        font-size: 24px;
+        font-size: 32px;
         text-align: center;
-        color: #f1f1f1;
-        margin-bottom: 20px;
+        color: #e91e63; /* Vibrant accent color for the heading */
+        margin-bottom: 40px;
         text-transform: uppercase;
-        font-weight: bold;
+        font-weight: 700;
+        letter-spacing: 1px;
       }
 
       form {
-        background: #1e1e1e;
+        background: #1e1e1e; /* Darker background for the form */
         border: 1px solid #333;
-        border-radius: 8px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
-        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.7);
+        padding: 25px;
         width: 100%;
-        max-width: 500px;
+        max-width: 550px;
       }
 
       label {
         font-size: 16px;
-        color: #f1f1f1;
+        color: #bdbdbd; /* Subtle gray for labels */
+        margin-bottom: 8px;
+        display: block;
       }
 
       input[type="text"] {
         background-color: #333;
-        color: #f1f1f1;
-        border: 1px solid #444;
-        padding: 8px 12px;
+        color: #ffffff;
+        border: 1px solid #555;
+        padding: 12px 15px;
         width: 100%;
+        border-radius: 6px;
+        font-size: 16px;
       }
 
       input[type="text"]:focus {
-        border-color: #007bff;
+        border-color: #00bcd4; /* Accent color on focus */
         outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        box-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
+      }
+
+      .radio-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .radio-group label {
+        color: #ffffff;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .radio-group input {
+        margin-right: 8px;
+        transform: scale(1.2);
       }
 
       .btn-primary {
-        background: linear-gradient(45deg, #007bff, #0056b3);
+        background: linear-gradient(
+          45deg,
+          #673ab7,
+          #3f51b5
+        ); /* Gradient button */
         border: none;
-        padding: 10px 20px;
-        font-size: 16px;
+        padding: 12px 20px;
+        font-size: 18px;
         color: white;
-        border-radius: 4px;
+        border-radius: 8px;
         width: 100%;
+        cursor: pointer;
+        transition: background 0.3s ease;
       }
 
       .btn-primary:hover {
-        background: linear-gradient(45deg, #0056b3, #007bff);
+        background: linear-gradient(45deg, #3f51b5, #673ab7);
+      }
+
+      .btn-primary:active {
+        transform: scale(0.98);
+      }
+
+      .form-control {
+        margin-bottom: 20px;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 24px;
+          margin-bottom: 20px;
+        }
+
+        form {
+          padding: 20px;
+        }
       }
     </style>
   </head>
@@ -86,40 +134,58 @@
     <div class="container">
       <h1>Paste your YouTube link here</h1>
       <form id="form" class="mx-auto">
-        <div class="mb-3">
+        <div class="form-control">
           <label for="customer">Customer:</label>
           <input
             type="text"
-            class="form-control mt-2"
+            class="form-control"
             id="customer"
             name="Customer"
             list="customers"
+            placeholder="Enter Customer Name"
           />
           <datalist id="customers">
             <!-- JavaScript will add options here -->
           </datalist>
         </div>
+
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="platform" value="youtube" checked />
+            YouTube
+          </label>
+          <label>
+            <input type="radio" name="platform" value="instagram" />
+            Instagram
+          </label>
+        </div>
+
         <button type="submit" class="btn btn-primary mt-3">Submit</button>
       </form>
     </div>
 
     <script>
       const url =
-        "https://script.google.com/macros/s/AKfycbxFXxUOy-VrCRQGMR64OWUXtoFk_6kdfWPoWvkFI5lmQ8O-lAF8teUJLrfkBXubBl75Rw/exec"; // Enter your public ('access' - 'anyone') deployment URL
+        "https://script.google.com/macros/s/AKfycbzQ-Ocsnwhch0YXEHFkb750yPbZ6WrPC6pGXqgjHLX9Lh3n8Dd5UcJJAvZxROM08m0MWQ/exec";
 
       document.getElementById("form").addEventListener("submit", function (e) {
-        e.preventDefault(); // Prevent the default form submission behavior
+        e.preventDefault();
 
-        const formData = new FormData(this); // Get form data
+        const formData = new FormData(this);
+        const platform = document.querySelector(
+          'input[name="platform"]:checked'
+        ).value;
 
-        // Send the form data using fetch
-        fetch(url, {
+        formData.append("platform", platform);
+        const sheet = platform === "youtube" ? "Sheet1" : "Sheet2";
+
+        fetch(`${url}?sheet=${sheet}`, {
           method: "POST",
           body: formData,
         })
           .then((response) => response.json())
           .then(() => {
-            this.reset(); // Reset the form
+            this.reset();
             console.log("Form submitted successfully!");
           })
           .catch((error) => {
@@ -127,7 +193,6 @@
           });
       });
 
-      // Fetch data for the Customer column and populate the datalist
       fetch(`${url}?header=Customer`)
         .then((response) => response.json())
         .then(({ data }) => {
@@ -138,7 +203,6 @@
           console.error("Error fetching customer data:", error)
         );
 
-      // Function to add options to the datalist
       const populateDatalists = (id, arr) => {
         let result = "";
         for (const item of arr) {
